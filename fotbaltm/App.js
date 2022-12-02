@@ -1,17 +1,18 @@
 import React from 'react';
 import {
+  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import Register from './src/screens/Register';
 
 function App() {
   return(
-    <View style={styles.container}>
-      <Text style={styles.text}> FOTBAL TM </Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView>
+      <Register />
+    </SafeAreaView>
   );
 }
 
