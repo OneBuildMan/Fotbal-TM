@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, StyleSheet } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
@@ -12,7 +14,21 @@ function Register() {
     const [role, setRole] = useState();
 
     const onRegisterPressed = () => {
-        console.warn("buton apasat");
+        auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then( () => {
+            console.warn("Utilizator creeat");
+            firestore().collection("users").doc(auth().currentUser.uid).set({
+                uid: auth().currentUser.uid,
+                name: name,
+                role: role,
+                email: email,
+                number: number
+            })
+        })
+        .catch(error => {
+            alert(error.message);
+        })
     }
 
     return(
