@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "849504621524",
+    "project_id": "fotbaltm",
+    "storage_bucket": "fotbaltm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849504621524:android:74b9313cd409301261fc41",
+        "android_client_info": {
+          "package_name": "com.fotbaltm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849504621524-aa9i963m2pibg2ec5o2o2efta8rlmvtp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMj7-TTOR3XhRMHpFbHiR7-yC65Bt3s3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849504621524-aa9i963m2pibg2ec5o2o2efta8rlmvtp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
