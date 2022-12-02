@@ -3,6 +3,7 @@ import { Text, View, StyleSheet } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
+import {useNavigation} from '@react-navigation/native';
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 
@@ -12,6 +13,8 @@ function Register() {
     const [number, setNumber] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState();
+
+    const navigation = useNavigation();
 
     const onRegisterPressed = () => {
         auth()
@@ -24,7 +27,9 @@ function Register() {
                 role: role,
                 email: email,
                 number: number
-            })
+            });
+
+            navigation.navigate('HomeLogin'); // doar sa fiu sigur ca functioneaza navigate cum trebuie
         })
         .catch(error => {
             alert(error.message);

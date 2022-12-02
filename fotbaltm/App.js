@@ -6,13 +6,11 @@ import {
   Text,
   View,
 } from 'react-native';
-import Register from './src/screens/Register';
+import Navigation from './src/navigation/index';
 
 function App() {
   return(
-    <SafeAreaView>
-      <Register />
-    </SafeAreaView>
+      <Navigation />
   );
 }
 
