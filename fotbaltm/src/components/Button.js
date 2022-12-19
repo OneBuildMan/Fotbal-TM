@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 
-function Button({text, onPress, bgColor, fgColor}) {
-    return(
+function Button({text, onPress, bgColor, fgColor}) { //la buton poti scrie  bgColor='white' direct in el,
+    return(                                          //sau poti sa lasi gol
         <Pressable onPress={onPress} style={[styles.container, bgColor ? {backgroundColor:bgColor}:{}]}>
             <Text style={[styles.text, fgColor ? {color: fgColor} : {}]}>{text}</Text>
         </Pressable>
