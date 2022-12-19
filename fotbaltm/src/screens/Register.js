@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet,ScrollView } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
@@ -16,11 +16,18 @@ function Register() {
 
     const navigation = useNavigation();
 
+    const onLoginPressed = () => {
+        console.warn("Login");
+        //validate user
+
+        navigation.navigate('HomeLogin');
+    }
+
     const onRegisterPressed = () => {
         auth()
         .createUserWithEmailAndPassword(email, password)
         .then( () => {
-            console.warn("Utilizator creeat");
+            console.warn("Utilizator creat");
             firestore().collection("users").doc(auth().currentUser.uid).set({
                 uid: auth().currentUser.uid,
                 name: name,
@@ -37,6 +44,7 @@ function Register() {
     }
 
     return(
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View >
             <Text style={styles.text}> Fotbal TM </Text>
 
@@ -61,7 +69,9 @@ function Register() {
             </View>
 
             <Button text="Creeaza contul" onPress={onRegisterPressed}/>
+            <Button text="Login" onPress={onLoginPressed} bgColor='white'/>
         </View>
+        </ScrollView>
     );
 }
 
