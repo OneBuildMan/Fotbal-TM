@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView} from "react-native";
 import Logo from '../../assets/images/logo.jpg';
 import {useNavigation} from '@react-navigation/native';
-import AppLogin from "../components/AppLogin";
 import Button from "../components/Button";
 import auth from '@react-native-firebase/auth';
 
@@ -17,21 +16,6 @@ function HomeScreen() {
         }) 
     }
 
-    const onBookFieldPressed = () => {
-        console.log('Rezerva teren');
-        navigation.navigate('BookField');
-    }
-
-    const onSeeYourBooksPressed = () => {
-        console.log('Rezerva teren');
-        navigation.navigate('SeeBooks');
-    }
-
-    const onFindTeamMatesPressed = () => {
-        console.log('Rezerva teren');
-        navigation.navigate('FindTeamMates');
-    }
-
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
@@ -40,10 +24,7 @@ function HomeScreen() {
             style={[styles.logo, {height: height * 0.1}]} 
             resizeMode="contain"
             />
-            <Text> Home</Text>
-            <Button text="Rezerva Teren" onPress={onBookFieldPressed} bgColor='white' />
-            <Button text="Vezi rezervarile tale" onPress={onSeeYourBooksPressed} bgColor='white' />
-            <Button text="Gaseste Coechipieri" onPress={onFindTeamMatesPressed} bgColor='white' />
+            <Text> Stay tunned for cr7</Text>
             <Button text="Sign Out" onPress={onSignOutPressed} bgColor='white' />
         </View>
         </ScrollView>
