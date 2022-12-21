@@ -14,6 +14,7 @@ function HomeScreen() {
         auth().signOut()
         .then(()=>{
             console.log('Logged out');
+            navigation.navigate('HomeLogin');
         }) 
     }
 
