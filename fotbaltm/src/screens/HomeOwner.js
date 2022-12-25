@@ -19,7 +19,6 @@ function HomeOwner() {
         <ScrollView showsVerticalScrollIndicator={false}>
             <View>
             <FieldDetailsOwner />
-            <Button text="Sign Out" onPress={onSignOutPressed} bgColor='white' />
             </View>
         </ScrollView>
     );

@@ -2,13 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import InputBox from './InputBox';
 import CheckBox from '@react-native-community/checkbox';
+import Button from './Button';
 
 function AddField() {
-    const [name, setName] = useState();
-    const [address, setAddress] = useState();
-    const [number, setNumber] = useState();
-    const [price, setPrice] = useState();
-    const [covered, setCovered] = useState();
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+    const [number, setNumber] = useState(0);
+    const [price, setPrice] = useState(0);
+    const [covered, setCovered] = useState(false);
+
+    const onSaveFieldPressed = () => {
+
+    }
+    
     return(
         <View> 
             <View style={styles.container}>
@@ -17,10 +23,12 @@ function AddField() {
                 <InputBox placeholder="Numar de contact" value={number} setValue={setNumber} keyboardType='numeric' />
                 <InputBox placeholder="Pret / ora" value={price} setValue={setPrice} keyboardType='numeric'/>
                 <View style={styles.covered}>
-                <CheckBox style={styles.checkbox} disabled={false} value={covered} />
+                <CheckBox style={styles.checkbox} disabled={false} value={covered} setValue={setCovered} />
                 <Text style={styles.label}>Balon pus</Text>
                 </View>
+                <Text> placeholder image </Text>
             </View>
+            <Button text="Salveaza terenul" onPress={onSaveFieldPressed}></Button>
         </View>
     );
 }
