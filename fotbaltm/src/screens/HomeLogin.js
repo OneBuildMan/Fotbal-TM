@@ -5,8 +5,9 @@ import InputBox from "../components/InputBox";
 import Button from "../components/Button";
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import firestore from "@react-native-firebase/firestore";
 import AppLogin from "../components/AppLogin";
-
+import { OWNER_ROLE, PLAYER_ROLE } from "../const";
 function HomeLogin() {
 
     const {height} = useWindowDimensions();
@@ -20,9 +21,16 @@ function HomeLogin() {
     const onSignInPressed = () => {
 
         auth().signInWithEmailAndPassword(email,password)
-        .then(()=>{
+        .then(async ()=>{
             console.log('Te-ai autentificat!');
-            navigation.navigate('Home');
+            const userLoggedIn = await firestore().collection("users").doc(auth().currentUser.uid).get();
+            const role = userLoggedIn.get("role");
+            if(role === OWNER_ROLE) {
+                navigation.navigate('HomeOwner');
+            }
+            if(role === PLAYER_ROLE) {
+                navigation.navigate('Home');
+            }
         })
         .catch(error => {
             if(error.code === 'auth/invalid-email') {

@@ -3,6 +3,7 @@ import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView} from "r
 import Logo from '../../assets/images/logo.jpg';
 import {useNavigation} from '@react-navigation/native';
 import AppLogin from "../components/AppLogin";
+import NavBar from "../components/NavBar";
 import Button from "../components/Button";
 import auth from '@react-native-firebase/auth';
 
@@ -36,6 +37,7 @@ function HomeScreen() {
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
+            <NavBar text="Home Jucator"/>
             <Image 
             source={Logo} 
             style={[styles.logo, {height: height * 0.1}]} 

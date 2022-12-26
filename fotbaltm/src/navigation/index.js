@@ -7,7 +7,7 @@ import Homescreen from "../screens/HomeScreen";
 import BookField from "../screens/BookField";
 import SeeYourBooks from "../screens/SeeBooks";
 import FindTeamMates from "../screens/FindTeamMates";
-
+import HomeOwner from "../screens/HomeOwner";
 const Stack = createNativeStackNavigator();
 
 function Navigation() {
@@ -20,6 +20,7 @@ function Navigation() {
                 <Stack.Screen name="BookField" component={BookField} />
                 <Stack.Screen name="SeeBooks" component={SeeYourBooks} />
                 <Stack.Screen name="FindTeamMates" component={FindTeamMates} />
+                <Stack.Screen name="HomeOwner" component={HomeOwner} />
             </Stack.Navigator>
         </NavigationContainer>
     );
