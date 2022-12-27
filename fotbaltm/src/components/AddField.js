@@ -11,11 +11,10 @@ import firestore from '@react-native-firebase/firestore';
 
 function AddField() {
     const {height} = useWindowDimensions();
-
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
-    const [number, setNumber] = useState(0);
-    const [price, setPrice] = useState(0);
+    const [number, setNumber] = useState('');
+    const [price, setPrice] = useState('');
     const [covered, setCovered] = useState(false);
     const [image, setImage] = useState(null);
     const [filename, setFileName] = useState('');
@@ -50,29 +49,37 @@ function AddField() {
     const onSaveFieldPressed = async () => {
         console.log(image);
 
-        const task = storage()
-        .ref(filename)
-        .putFile(image);
-
-        try {
-            await task;
-        } catch(e) {
-            console.error(e);
+        if(!name.trim() || !address.trim() || !number.trim() || !price.trim() || filename=='' || image==null ) {
+            Alert.alert(
+                'Completeaza toate campurile !'
+            );
         }
+        else {
+            const task = storage()
+            .ref(filename)
+            .putFile(image);
+    
+            try {
+                await task;
+            } catch(e) {
+                console.error(e);
+            } 
 
-        firestore().collection("fields").doc().set({
-            nume: name,
-            adresa: address,
-            numar: number,
-            pret: price,
-            acoperit: covered,
-            imagine: filename,
-            owner_id: auth().currentUser.uid
-        });
+            firestore().collection("fields").doc().set({
+                nume: name,
+                adresa: address,
+                numar: number,
+                pret: price,
+                acoperit: covered,
+                imagine: filename,
+                owner_id: auth().currentUser.uid
+            });
 
-        Alert.alert(
-            'Teren creeat cu succes!'
-          );
+            Alert.alert(
+                'Teren creeat cu succes!'
+              );
+        }   
+
    
     }
     
@@ -84,7 +91,7 @@ function AddField() {
                 <InputBox placeholder="Numar de contact" value={number} setValue={setNumber} keyboardType='numeric' />
                 <InputBox placeholder="Pret / ora" value={price} setValue={setPrice} keyboardType='numeric'/>
                 <View style={styles.covered}>
-                <CheckBox style={styles.checkbox} disabled={false} value={covered} setValue={setCovered} />
+                <CheckBox style={styles.checkbox} disabled={false} value={covered} onValueChange={(newValue) => setCovered(newValue)} />
                 <Text style={styles.label}>Balon pus</Text>
                 </View>
 
