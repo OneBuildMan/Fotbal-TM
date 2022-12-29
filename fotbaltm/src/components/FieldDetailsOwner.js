@@ -10,17 +10,10 @@ function FieldDetailsOwner() {
     const [field, setField] = useState();   
 
     useEffect(  () => {
-        async function fetchField() {
-            const fieldQuery = await firestore().collection("fields").where('owner_id', '==', auth().currentUser.uid).get();
-            const fieldData = fieldQuery.docs[0];
-            
-            if( fieldData ) {
+            firestore().collection("fields").where('owner_id', '==', auth().currentUser.uid).get().then( (fieldQuery) => {
+                const fieldData = fieldQuery.docs[0];
                 setField(fieldData);
-            }
-        }
-
-        fetchField().catch(console.error);
-
+            } );
     }, []);
 
     if(!field) {     // daca proprietarul nu are deja un teren creeat, ii va aparea formularul sa creeze terenul. In caz contrar, vor aparea detaliile terenului.

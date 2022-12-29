@@ -19,7 +19,6 @@ function SeeField({ field }) {
         storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
     }, []);
 
-    console.log(imageSource);
     const onDeleteFieldPressed = () => {
 
     }
