@@ -3,9 +3,26 @@ import { View, Text, StyleSheet } from 'react-native';
 import NavBar from './NavBar';
 import AddField from './AddField';
 import SeeField from './SeeField';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 function FieldDetailsOwner() {
     const [field, setField] = useState();   
+
+    useEffect(  () => {
+        async function fetchField() {
+            const fieldQuery = await firestore().collection("fields").where('owner_id', '==', auth().currentUser.uid).get();
+            const fieldData = fieldQuery.docs[0];
+            
+            if( fieldData ) {
+                setField(fieldData);
+            }
+        }
+
+        fetchField().catch(console.error);
+
+    }, []);
+
     if(!field) {     // daca proprietarul nu are deja un teren creeat, ii va aparea formularul sa creeze terenul. In caz contrar, vor aparea detaliile terenului.
         return(
             <View>
@@ -18,8 +35,7 @@ function FieldDetailsOwner() {
     return(
         <View>
             <NavBar text="Detalii teren"/>
-            <Text> Terenul exista, aici sunt detaliile </Text>
-            <SeeField />
+            <SeeField field={field}  />
         </View>
     );
 }
