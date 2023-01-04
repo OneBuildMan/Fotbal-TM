@@ -38,9 +38,9 @@ const List = () => {
           <Text style={styles.itemTitle}>{item.nume}</Text>
           {expanded === item.id && (
             <View style={styles.expandedContainer}>
-              <Text>{item.adresa}</Text>
-              <Text>{item.numar}</Text>
-              <Text>{item.pret}</Text>
+              <Text style={styles.label}>{item.adresa}</Text>
+              <Text style={styles.label}>{item.numar}</Text>
+              <Text style={styles.label}>{item.pret} lei/ora</Text>
               <View style={styles.container}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Acoperit:</Text>
@@ -65,15 +65,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 1,
     borderRadius: 4,
-    padding: 20,
+
+    paddingTop: 5,
+    paddingBottom: 5,
+    paddingLeft: 40,
+    paddingRight: 60,
+
+    marginTop: 10,
     marginVertical: 8,
     marginHorizontal: 16,
   },
   itemTitle: {
-    fontSize: 32,
+    fontSize: 20,
+    alignSelf: "center",
+    color: "black"
   },
   expandedContainer: {
-    padding: 20,
+    
   },
 
   container: {
@@ -88,6 +96,9 @@ const styles = StyleSheet.create({
   },
   label: {
     margin: 1,
+    padding: 1.5,
+    color: "black",
+    fontSize: 16
   },
   imageView: {
     paddingLeft: 10,

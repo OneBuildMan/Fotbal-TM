@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView} from "react-native";
 import Logo from '../../assets/images/logo.jpg';
 import {useNavigation} from '@react-navigation/native';
+import NavBar from '../components/NavBar';
 import Button from "../components/Button";
 import auth from '@react-native-firebase/auth';
 import ScrollableList from "../components/ScrollableList";
@@ -28,15 +29,12 @@ function HomeScreen() {
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
-            <Image 
-            source={Logo} 
-            style={[styles.logo, {height: height * 0.1}]} 
-            resizeMode="contain"
-            />
-            <Text> Stay tunned for cr7</Text>
+            <NavBar text="Lista terenuri"/>
+            <View style={styles.buttons}>
+            <Button bgColor="white" text="Vezi rezervarile tale"/>
+            <Button bgColor="white" marginLeft={60} text="Gaseste coechipieri"/>
+            </View>
             <ScrollableList/>
-            <Button text="Sign Out" onPress={onSignOutPressed} bgColor='white' />
-            
         </View>
         </ScrollView>
     );
@@ -53,6 +51,11 @@ const styles = StyleSheet.create({
         maxWidth: 300,
         maxHeight: 200,
     },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        marginBottom: 15
+    }
     
 });
 export default HomeScreen;
