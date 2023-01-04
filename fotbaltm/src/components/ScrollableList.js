@@ -20,7 +20,17 @@ const List = () => {
     firestore()
       .collection('fields')
       .onSnapshot(snapshot => {
-        const items = snapshot.docs.map(doc => doc.data());
+        let items = snapshot.docs.map(doc => doc.data());
+
+        // luam si id-urile field-urilor si le adaugam in array
+        const items_ids = snapshot.docs.map(doc => doc.id);
+        let counter = 0;
+        items.forEach( (it) => {
+          it.id = items_ids[counter];
+          counter++;
+        })
+        counter = 0;
+        
         setItems(items);
       });
      // storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
