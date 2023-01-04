@@ -4,29 +4,21 @@ import Logo from '../../assets/images/logo.jpg';
 import {useNavigation} from '@react-navigation/native';
 import Button from "../components/Button";
 import auth from '@react-native-firebase/auth';
+import NavBar from "../components/NavBar";
 
-function HomeScreen() {
+function FindTeamMates() {
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
 
-    const onSignOutPressed = () => {
-        auth().signOut()
-        .then(()=>{
-            console.log('Logged out');
-            navigation.navigate('HomeLogin');
-        }) 
+    const onAddAnnouncementPressed = () => {
+        navigation.navigate("AddAnnouncement");
     }
 
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
-            <Image 
-            source={Logo} 
-            style={[styles.logo, {height: height * 0.1}]} 
-            resizeMode="contain"
-            />
-            <Text> Stay tunned for cr7</Text>
-            <Button text="Sign Out" onPress={onSignOutPressed} bgColor='white' />
+        <NavBar text="Gasire de coechipieri" />
+        <Button alignSelf="flex-start" bgColor="white" text="Adauga un anunt" onPress={onAddAnnouncementPressed}/>
         </View>
         </ScrollView>
     );
@@ -45,4 +37,4 @@ const styles = StyleSheet.create({
     },
     
 });
-export default HomeScreen;
+export default FindTeamMates;
