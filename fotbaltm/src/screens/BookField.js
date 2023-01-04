@@ -4,10 +4,18 @@ import Logo from '../../assets/images/logo.jpg';
 import {useNavigation} from '@react-navigation/native';
 import Button from "../components/Button";
 import auth from '@react-native-firebase/auth';
+import ScrollableList from "../components/ScrollableList";
 
 function HomeScreen() {
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
+
+    const items = [
+        { id: 1, title: 'Item 1', details: 'Additional item details go here' },
+        { id: 2, title: 'Item 2', details: 'Additional item details go here' },
+        { id: 3, title: 'Item 2', details: 'Additional item details go here' },
+        // More items
+      ];
 
     const onSignOutPressed = () => {
         auth().signOut()
@@ -26,7 +34,9 @@ function HomeScreen() {
             resizeMode="contain"
             />
             <Text> Stay tunned for cr7</Text>
+            <ScrollableList/>
             <Button text="Sign Out" onPress={onSignOutPressed} bgColor='white' />
+            
         </View>
         </ScrollView>
     );
