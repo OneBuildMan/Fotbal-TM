@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         textAlign: 'center',
         fontWeight: 'bold',
+        color: "black"
     }
 })
 export default Button;

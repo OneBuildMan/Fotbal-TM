@@ -34,11 +34,11 @@ function SeeField({ field }) {
             <Text style={styles.text}> {name} </Text>              
             <Text style={styles.text}> {address} </Text>
             <Text style={styles.text}> {number} </Text>
-            <Text style={styles.text}> {price} </Text>
+            <Text style={styles.text}> {price} lei/ora </Text>
 
             <View style={styles.covered}>
                 <CheckBox style={styles.checkbox} disabled={false} value={covered} />
-                <Text style={styles.text}>Balon pus</Text>
+                <Text style={styles.text}>Acoperit</Text>
             </View>
             <View style={styles.imageView}>
             <Image style={styles.image} source={{uri: imageSource}} />
@@ -47,7 +47,7 @@ function SeeField({ field }) {
 
             <View style={styles.buttons}>
             <Button text="Sterge terenul" bgColor='white' onPress={onDeleteFieldPressed} />
-            <Button text="Editeaza informatiile terenului" bgColor='white' width='55%' onPress={onEditFieldPressed} />
+            <Button text="Editeaza informatiile terenului" bgColor='white' width='58%' onPress={onEditFieldPressed} />
             </View>
         </View>
     );
