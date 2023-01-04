@@ -26,11 +26,12 @@ const List = () => {
         const items_ids = snapshot.docs.map(doc => doc.id);
         let counter = 0;
         items.forEach( (it) => {
+          storage().ref(it.imagine).getDownloadURL().then( (url) => { it.urlImagine = url });
           it.id = items_ids[counter];
           counter++;
         })
         counter = 0;
-        
+
         setItems(items);
       });
      // storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
@@ -48,6 +49,9 @@ const List = () => {
           <Text style={styles.itemTitle}>{item.nume}</Text>
           {expanded === item.id && (
             <View style={styles.expandedContainer}>
+              <View style={styles.details}>
+
+              <View>
               <Text style={styles.label}>{item.adresa}</Text>
               <Text style={styles.label}>{item.numar}</Text>
               <Text style={styles.label}>{item.pret} lei/ora</Text>
@@ -56,14 +60,19 @@ const List = () => {
                 <Text style={styles.label}>Acoperit:</Text>
                 <CheckBox value={item.acoperit}/>
               </View> 
-              <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white' />
-              <View style={styles.imageView}>
-                <Image style={styles.image} source={{uri: item.imagine}} />
               </View>
-    </View>
+              </View>
+
+              <View style={styles.imageView}>
+                <Image style={styles.image} source={{uri: item.urlImagine}} />
+              </View>
+              </View>
+              <Text> Alege data placeholder </Text>
+              <Text> Alege ora placeholder </Text>
+              <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white'/>
             </View>
           )}
-        </TouchableOpacity>
+          </TouchableOpacity>
       ))}
     </ScrollView>
   );
@@ -76,10 +85,10 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     borderRadius: 4,
 
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 4,
+    paddingBottom: 4,
     paddingLeft: 40,
-    paddingRight: 60,
+    paddingRight: 40,
 
     marginTop: 10,
     marginVertical: 8,
@@ -91,9 +100,13 @@ const styles = StyleSheet.create({
     color: "black"
   },
   expandedContainer: {
-    
-  },
 
+  },
+  details: {
+    display: "flex",
+    flexDirection: "row", 
+    justifyContent: "space-between"
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -111,13 +124,13 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   imageView: {
-    paddingLeft: 10,
-    paddingBottom: 10
+    paddingLeft: 20,
+    paddingBottom: 10,
+    paddingTop: 15
 },
 image: {
-    width: 200,
-    height: 200,
-    padding: 10
+    width: 150,
+    height: 130,
 }
 
 });
