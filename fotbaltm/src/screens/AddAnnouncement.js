@@ -30,7 +30,7 @@ function AddAnnouncement() {
 
     return(
         <View>
-            <NavBar text="Adauga un anunt"/>
+            <NavBar text="Adauga un anunt" goBack={true} navigateScreen="FindTeamMates"/>
             <View style={styles.container}>
                 <Text> Alege ziua placeholder </Text>
                 <Text> Alege data placeholder </Text>
