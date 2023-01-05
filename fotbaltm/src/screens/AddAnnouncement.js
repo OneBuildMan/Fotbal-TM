@@ -1,12 +1,15 @@
 import React, {useState, useEffect} from "react";
-import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView} from "react-native";
+import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView, Alert} from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Button from "../components/Button";
 import NavBar from "../components/NavBar";
 import NumericInput from 'react-native-numeric-input';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 function AddAnnouncement() {
+    const [date, setDate] = useState('07.01');
+    const [time, setTime] = useState('18:00');
     const [occupiedPlaces, setOccupiedPlaces] = useState(0);
     const [selectedField, setSelectedField] = useState('');
     const [fieldNames, setFieldNames] = useState([]);
@@ -25,7 +28,16 @@ function AddAnnouncement() {
     }, []);
 
     const onSaveAnnouncementPressed = () => {
-
+        firestore().collection("announcements").doc().set({
+            date: date,
+            time: time,
+            field: selectedField,
+            occupiedPlaces: occupiedPlaces,
+            creator_id: auth().currentUser.uid
+        }).then( () => Alert.alert('Anunt publicat cu succes!')).catch( (err) => { 
+            Alert.alert('A aparut o eroare');
+            console.log(err);
+    });
     }
 
     return(
@@ -44,7 +56,7 @@ function AddAnnouncement() {
                 }>
                     { fieldNames.map( (item) => {
                         return(
-                            <Picker.Item style={{fontSize: 14}} label={item} value={item} ></Picker.Item>
+                            <Picker.Item key={item} style={{fontSize: 14}} label={item} value={item} ></Picker.Item>
                         );
                     })}
                 </Picker>
