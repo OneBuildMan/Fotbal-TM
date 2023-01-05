@@ -4,7 +4,7 @@ import firestore from '@react-native-firebase/firestore';
 import CheckBox from '@react-native-community/checkbox';
 import Button from "../components/Button";
 import storage from '@react-native-firebase/storage';
-
+import ScheduleModal from "../components/ScheduleModal";
 
 
 
@@ -67,7 +67,7 @@ const List = () => {
                 <Image style={styles.image} source={{uri: item.urlImagine}} />
               </View>
               </View>
-              <Text> Alege data placeholder </Text>
+              <ScheduleModal/>
               <Text> Alege ora placeholder </Text>
               <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white'/>
             </View>
