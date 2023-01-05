@@ -9,6 +9,7 @@ function SeeAnnouncements() {
 
     useEffect( () => {
         firestore().collection('announcements').onSnapshot(snapshot => {
+            if(snapshot) {
             let items = snapshot.docs.map(doc => doc.data());
             const items_ids = snapshot.docs.map(doc => doc.id);
             let counter = 0;
@@ -20,6 +21,7 @@ function SeeAnnouncements() {
 
             let announcementsNonOccupied = items.filter( it => it.occupiedPlaces<12); // o sa fie aratate doar anunturile care nu sunt deja ocupate
             setAnnouncements(announcementsNonOccupied);
+        }
         })
     }, []);
 
