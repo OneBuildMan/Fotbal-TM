@@ -5,11 +5,17 @@ import SeeYourAnnouncements from "../components/SeeYourAnnouncements";
 
 function SeeYourAnnouncementsScreen() {
     return(
-        <View>
+        <View style={styles.root}>
             <NavBar text="Anunturile tale" goBack={true} navigateScreen="FindTeamMates"/>
             <SeeYourAnnouncements />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    root: {
+        paddingTop: 20
+    }
+});
 
 export default SeeYourAnnouncementsScreen;

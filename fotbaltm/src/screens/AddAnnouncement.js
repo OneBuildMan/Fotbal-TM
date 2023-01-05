@@ -41,7 +41,7 @@ function AddAnnouncement() {
     }
 
     return(
-        <View>
+        <View style={styles.root}>
             <NavBar text="Adauga un anunt" goBack={true} navigateScreen="FindTeamMates"/>
             <View style={styles.container}>
                 <Text> Alege ziua placeholder </Text>
@@ -74,6 +74,9 @@ function AddAnnouncement() {
 }
 
 const styles = StyleSheet.create({
+    root: {
+        paddingTop: 20
+    },
     container: {
         marginTop: 20,
         marginLeft: 40,

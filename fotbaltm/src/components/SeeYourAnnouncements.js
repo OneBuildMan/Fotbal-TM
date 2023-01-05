@@ -29,15 +29,20 @@ function SeeYourAnnouncements() {
         setExpanded(expanded === id ? null : id);
     };
 
-    const errorMessage = 'eroare';
     const onDeleteAnnouncement = (id) => {
-        // aici se va sterge anuntul respectiv
         Alert.alert('Esti sigur ca vrei sa stergi anuntul ?', 
         '',
         [
             {
                 text: "Da",
-                onPress: () => Alert.alert('Anunt sters cu succes!')
+                onPress: () => {
+                    firestore().collection('announcements').doc(id).delete()
+                    .then(() => Alert.alert('Anunt sters cu succes'))
+                    .catch((err) => {
+                        Alert.alert('A aparut o eroare');
+                        console.log(err);
+                    })
+                }
             },
             {
                 text: "Nu",

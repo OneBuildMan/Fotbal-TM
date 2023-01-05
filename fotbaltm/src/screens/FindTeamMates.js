@@ -25,7 +25,7 @@ function FindTeamMates() {
         <NavBar text="Gasire de coechipieri" />
         <View style={styles.buttons}>
             <Button bgColor="white" text="Adauga un anunt" onPress={onAddAnnouncementPressed}/>
-            <Button bgColor="white" text="Vezi anunturile tale" marginLeft={60} onPress={onSeeYourAnnouncementsPressed} ></Button>
+            <Button bgColor="white" text="Vezi anunturile tale" marginLeft={50} onPress={onSeeYourAnnouncementsPressed} ></Button>
         </View>
         <SeeAnnouncements />
         </View>
@@ -37,7 +37,7 @@ function FindTeamMates() {
 const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
-        padding: 20,
+        paddingTop: 20,
     },
     buttons: {
         display: "flex",
