@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView, TouchableOpacity} from "react-native";
 import NavBar from "../components/NavBar";
+import SeeYourAnnouncements from "../components/SeeYourAnnouncements";
 
-function SeeYourAnnouncements() {
+function SeeYourAnnouncementsScreen() {
     return(
         <View>
             <NavBar text="Anunturile tale" goBack={true} navigateScreen="FindTeamMates"/>
-            <Text> Aici sunt anunturile tale </Text>
+            <SeeYourAnnouncements />
         </View>
     );
 }
 
-export default SeeYourAnnouncements;
+export default SeeYourAnnouncementsScreen;
