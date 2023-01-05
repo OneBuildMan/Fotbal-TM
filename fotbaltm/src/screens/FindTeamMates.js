@@ -15,11 +15,18 @@ function FindTeamMates() {
         navigation.navigate("AddAnnouncement");
     }
 
+    const onSeeYourAnnouncementsPressed = () => {
+        navigation.navigate("SeeYourAnnouncements");   
+    }
+
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
         <NavBar text="Gasire de coechipieri" />
-        <Button alignSelf="flex-start" bgColor="white" text="Adauga un anunt" onPress={onAddAnnouncementPressed}/>
+        <View style={styles.buttons}>
+            <Button bgColor="white" text="Adauga un anunt" onPress={onAddAnnouncementPressed}/>
+            <Button bgColor="white" text="Vezi anunturile tale" marginLeft={60} onPress={onSeeYourAnnouncementsPressed} ></Button>
+        </View>
         <SeeAnnouncements />
         </View>
         </ScrollView>
@@ -31,6 +38,11 @@ const styles = StyleSheet.create({
     root: {
         alignItems: 'center',
         padding: 20,
+    },
+    buttons: {
+        display: "flex",
+        flexDirection: "row",
+        alignContent: "space-between"
     },
     logo: {
         width: '70%',

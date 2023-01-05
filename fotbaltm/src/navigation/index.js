@@ -9,6 +9,7 @@ import SeeYourBooks from "../screens/SeeBooks";
 import FindTeamMates from "../screens/FindTeamMates";
 import HomeOwner from "../screens/HomeOwner";
 import AddAnnouncement from "../screens/AddAnnouncement";
+import SeeYourAnnouncements from "../screens/SeeYourAnnouncements";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ function Navigation() {
                 <Stack.Screen name="SeeBooks" component={SeeYourBooks} />
                 <Stack.Screen name="FindTeamMates" component={FindTeamMates} />
                 <Stack.Screen name="AddAnnouncement" component={AddAnnouncement}/>
+                <Stack.Screen name="SeeYourAnnouncements" component={SeeYourAnnouncements}/>
                 <Stack.Screen name="HomeOwner" component={HomeOwner} />
             </Stack.Navigator>
         </NavigationContainer>
