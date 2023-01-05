@@ -1,13 +1,30 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, ScrollView, TouchableOpacity, useWindowDimensions, Pressable, Image, Alert} from 'react-native';
 import deleteLogo from '../../assets/images/deleteLogo.png';
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 function SeeYourAnnouncements() {
-    const yourAnnouncements = [{id:"2144", date: "08.06", time: "20:00", field: "Friends Arena", occupiedPlaces: 11},
-                               {id:"2134" ,date: "06.06", time: "18:00", field:"Banu Sport", occupiedPlaces: 5}];
+    const [yourAnnouncements, setYourAnnouncements] = useState([]);
     const [expanded, setExpanded] = useState(null);
     const {height} = useWindowDimensions();
 
+    useEffect( () => {
+        firestore().collection('announcements').where('creator_id', '==', auth().currentUser.uid).onSnapshot( snapshot => {
+            if(snapshot) {
+            let items = snapshot.docs.map(doc => doc.data());
+            const items_ids = snapshot.docs.map(doc => doc.id);
+            let counter = 0;
+            items.forEach( (it) => {
+                it.id = items_ids[counter];
+                counter++;
+            })
+            counter = 0;
+            
+            setYourAnnouncements(items);
+            }
+        })
+    }, []);
     const toggleExpand = id => {
         setExpanded(expanded === id ? null : id);
     };
