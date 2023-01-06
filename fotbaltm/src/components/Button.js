@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 
 function Button({text, onPress, bgColor, fgColor, width, marginLeft}) { //la buton poti scrie  bgColor='white' direct in el,
     return(                                          //sau poti sa lasi gol
-        <Pressable onPress={onPress} style={[styles.container, bgColor ? {backgroundColor:bgColor}:{}, width ? {width: width}:{}, marginLeft ? {marginLeft: marginLeft}: {}]}>
+        <Pressable onPress={onPress} style={[styles.container, bgColor ? {backgroundColor:bgColor}:{}, width ? {width: width}:{}, marginLeft ? {marginLeft: marginLeft}:{}]}>
             <Text style={[styles.text, fgColor ? {color: fgColor} : {}]}>{text}</Text>
         </Pressable>
     );

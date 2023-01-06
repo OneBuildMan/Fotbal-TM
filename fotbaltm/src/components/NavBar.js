@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, useWindowDimensions, Pressable } from 'react-native';
 import logout from '../../assets/images/logout.png';
+import goBackArrow from '../../assets/images/goBack.png';
 import {useNavigation} from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 
-function NavBar({ text }) {
+function NavBar({ text, goBack, navigateScreen }) {
     const navigation = useNavigation();
     const {height} = useWindowDimensions();
 
@@ -19,8 +20,17 @@ function NavBar({ text }) {
         })
     }
 
+    const onGoBackPressed = () => {
+        navigation.navigate(navigateScreen);
+    }
+
     return(
         <View style={styles.container}>
+            { goBack === true && (
+              <Pressable style={styles.button} onPress={onGoBackPressed} >
+              <Image style={[styles.logout, {height: height * 0.05}]} source={goBackArrow} />
+              </Pressable>
+            )}
             <Text style={styles.text}> {text} </Text>
             <Pressable style={styles.button} onPress={onSignOutPressed}>
             <Image style={[styles.logout, {height: height * 0.05}]} source={logout}  />
