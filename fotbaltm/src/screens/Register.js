@@ -56,12 +56,13 @@ function Register() {
 
             <View style={styles.role}>
             <Picker
+            dropdownIconColor="black"
             selectedValue={role}
             onValueChange={(itemValue, itemIndex) => 
                 setRole(itemValue)
             }>
-                <Picker.Item style={{fontSize: 14}} label="Proprietar teren" value="proprietar" />
-                <Picker.Item style={{fontSize: 14}} label="Jucator" value="jucator" />
+                <Picker.Item style={{fontSize: 14, color: "#A0A0A0"}} label="Proprietar teren" value="proprietar" />
+                <Picker.Item style={{fontSize: 14, color: "#A0A0A0"}} label="Jucator" value="jucator" />
 
             </Picker>
             </View>

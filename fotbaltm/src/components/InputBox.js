@@ -10,7 +10,8 @@ function InputBox( { value, setValue, placeholder, secureTextEntry, keyboardType
             placeholder={placeholder}
             secureTextEntry={secureTextEntry}
             keyboardType={keyboardType}
-            style={styles.input}/>
+            style={styles.input}
+            placeholderTextColor="#A0A0A0"/>
         </View>
     );
 }
@@ -23,8 +24,11 @@ const styles = StyleSheet.create({
 
         borderColor: '#777777',
         borderWidth: 1,
-        borderRadius: 1
+        borderRadius: 1,
+
     },
-    input: {}
+    input: {
+        color: "black"
+    },
 });
 export default InputBox;
