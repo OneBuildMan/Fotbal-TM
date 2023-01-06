@@ -10,6 +10,7 @@ import FindTeamMates from "../screens/FindTeamMates";
 import HomeOwner from "../screens/HomeOwner";
 import AddAnnouncement from "../screens/AddAnnouncement";
 import SeeYourAnnouncementsScreen from "../screens/SeeYourAnnouncementsScreen";
+import SeeBookingsAsPlayerScreen from "../screens/SeeBookingsAsPlayerScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ function Navigation() {
                 <Stack.Screen name="Register" component={Register} />
                 <Stack.Screen name="Home" component={Homescreen} />
                 <Stack.Screen name="BookField" component={BookField} />
+                <Stack.Screen name="SeeBookingsAsPlayer" component={SeeBookingsAsPlayerScreen}/>
                 <Stack.Screen name="SeeBooks" component={SeeYourBooks} />
                 <Stack.Screen name="FindTeamMates" component={FindTeamMates} />
                 <Stack.Screen name="AddAnnouncement" component={AddAnnouncement}/>

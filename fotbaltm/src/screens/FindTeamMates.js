@@ -22,7 +22,7 @@ function FindTeamMates() {
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
-        <NavBar text="Gasire de coechipieri" />
+        <NavBar text="Gasire de coechipieri" goBack={true} navigateScreen='BookField' />
         <View style={styles.buttons}>
             <Button bgColor="white" text="Adauga un anunt" onPress={onAddAnnouncementPressed}/>
             <Button bgColor="white" text="Vezi anunturile tale" marginLeft={50} onPress={onSeeYourAnnouncementsPressed} ></Button>

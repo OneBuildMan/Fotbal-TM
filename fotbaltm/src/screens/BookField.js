@@ -26,13 +26,21 @@ function HomeScreen() {
         }) 
     }
 
+    const onFindTeamMatesPressed = () => {
+        navigation.navigate('FindTeamMates');
+    }
+
+    const onSeeYourBookingsPressed = () => {
+        navigation.navigate('SeeBookingsAsPlayer');
+    }
+
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.root}>
             <NavBar text="Lista terenuri"/>
             <View style={styles.buttons}>
-            <Button bgColor="white" text="Vezi rezervarile tale"/>
-            <Button bgColor="white" marginLeft={60} text="Gaseste coechipieri"/>
+            <Button bgColor="white" text="Vezi rezervarile tale" onPress={onSeeYourBookingsPressed}/>
+            <Button bgColor="white" marginLeft={60} text="Gaseste coechipieri" onPress={onFindTeamMatesPressed}/>
             </View>
             <ScrollableList/>
         </View>
