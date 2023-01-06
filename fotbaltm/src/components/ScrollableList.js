@@ -17,9 +17,8 @@ const List = () => {
 }
 
   useEffect(() => {
-    firestore()
-      .collection('fields')
-      .onSnapshot(snapshot => {
+    firestore().collection('fields').onSnapshot(snapshot => {
+        if(snapshot) {
         let items = snapshot.docs.map(doc => doc.data());
 
         // luam si id-urile field-urilor si le adaugam in array
@@ -33,8 +32,10 @@ const List = () => {
         counter = 0;
 
         setItems(items);
+      }
       });
      // storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
+
 
   }, []);
 
@@ -67,7 +68,7 @@ const List = () => {
                 <Image style={styles.image} source={{uri: item.urlImagine}} />
               </View>
               </View>
-              <ScheduleModal/>
+              <ScheduleModal field={item}/>
               {/* <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white'/> */}
             </View>
           )}

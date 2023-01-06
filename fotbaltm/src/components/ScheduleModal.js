@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Modal, Alert, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, Alert, ScrollView, Pressable, useWindowDimensions, Image } from 'react-native';
 import Button from './Button';
+import goBackArrow from '../../assets/images/goBack.png';
 import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
 
-const WeekSchedule = () => {
-    const daysOfWeek = [    'Luni',    'Marti',    'Miercuri',    'Joi',    'Vineri',    'Sambadejaneiro',    'Duminica',  ];
-    const startTime = 15;
+function ScheduleModal({field}) {
+    const {height} = useWindowDimensions();
+    let currentDay = new Date().getDate();
+    let currentMonth = new Date().getMonth() + 1;
+    if( currentMonth < 10 ) {
+      currentMonth = '0' + currentMonth;
+    }
+    let daysOfWeek = [ ];
+    for(i=0; i<6; i++) {
+      let day = currentDay+i;
+      if( day < 10 ) {
+        day = '0' + day;
+      }
+      daysOfWeek[i] = day + '/' + currentMonth;
+    }
+    const startTime = 16;
     const endTime = 23;
-    const [selectedHours, setSelectedHours] = useState({});
+    const [selectedHour, setSelectedHour] = useState('');
+    const [selectedDay, setSelectedDay] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
     const [hours, setHours] = useState([]);
@@ -36,25 +52,58 @@ const WeekSchedule = () => {
     const handleHourPress = (day, hour) => {
       // Prompt the user if they want to book the selected hour
       Alert.alert(
-        `Book ${hour}:00 on ${day}?`,
+        ` Alegi ora ${hour}:00 in data de ${day} ?`,
         '',
         [
           {
-            text: 'Cancel',
+            text: 'Anuleaza',
             style: 'cancel',
           },
           {
-            text: 'OK',
+            text: 'Da',
             onPress: () => {
-              setSelectedHours({
-                ...selectedHours,
-                [day]: [...(selectedHours[day] || []), hour],
-              });
+              setSelectedHour(hour);
+              setSelectedDay(day);
             },
           },
         ],
         { cancelable: false }
       );
+    };
+
+    const onBookFieldPressed = () => {
+      const fieldsRefFirestore = firestore().collection("fields").doc(field.id);
+      const bookingsRefFirestore = fieldsRefFirestore.collection("bookings");
+
+      if(selectedDay != '' && selectedHour!= ''){
+      Alert.alert(`Esti sigur ca vrei sa rezervi terenul la ora ${selectedHour}:00 in data de ${selectedDay} ?`,
+      '',
+      [
+        {
+          text: 'Nu',
+          style: 'cancel',
+        },
+        {
+          text: 'Da',
+          onPress: () => {
+            bookingsRefFirestore.doc().set({
+              day: selectedDay,
+              hour: selectedHour,
+              player_id: auth().currentUser.uid
+            }).then( () => {
+              Alert.alert('Rezervare facuta cu succes!');
+              setSelectedDay('');
+              setSelectedHour('');
+             }).catch( (err) => {
+                Alert.alert('A aparut o eroare');
+                console.log(err);
+              })
+          }
+        }
+      ]);
+      }else{
+        Alert.alert('Nu ai selectat un interval, mai incearca');
+      }
     };
   
     const renderWeekSchedule = () => (
@@ -75,8 +124,8 @@ const WeekSchedule = () => {
                   <TouchableOpacity
                     key={hour}
                     onPress={() => handleHourPress(day, hour)}
-                    disabled={(selectedHours[day] || []).includes(hour)}>
-                    <Text style={[styles.hourText, (selectedHours[day] || []).includes(hour) && styles.selectedHourText,]}>
+                    disabled={selectedHour === hour}>
+                    <Text style={[styles.hourText, selectedHour === hour && selectedDay === day && styles.selectedHourText,]}>
                       {hour}:00
                     </Text>
                   </TouchableOpacity>
@@ -93,8 +142,13 @@ const WeekSchedule = () => {
     <ScrollView>
         <Button text="Alege ora si data rezervarii" bgColor="white" onPress={() => setIsModalVisible(true)}/>
       <Modal visible={isModalVisible}>
+      <View style={styles.buttonsView}>
+          <Pressable  onPress={() => setIsModalVisible(false)}>
+            <Image style={[styles.goBack, {height: height * 0.05}]} source={goBackArrow} />
+          </Pressable>
+          <Button text="Rezerva terenul" bgColor="white" width="40%" marginLeft={20} onPress={onBookFieldPressed} />
+      </View>
         {renderWeekSchedule()}
-          <Button text="Mergi inapoi" bgColor="white" width="40%" onPress={() => setIsModalVisible(false)}/>
       </Modal>
     </ScrollView>
   );
@@ -106,14 +160,13 @@ const styles = {
       alignSelf: "center",
     },
     dayText: {
-      fontSize: 20,
       fontWeight: 'bold',
       marginBottom: 10,
       color:'black',
-      fontSize: 25
+      fontSize: 24
     },
     hourText: {
-      fontSize: 16,
+      fontSize: 18,
       alignSelf: "center",
     },
     selectedHourText: {
@@ -122,7 +175,17 @@ const styles = {
     modalText: {
         margin: 20,
         fontSize: 25
+    },
+    goBack: {
+        maxWidth: 25,
+        maxHeight: 32,
+        marginTop: 25
+    },
+    buttonsView: {
+      alignSelf: "center",
+      display: "flex",
+      flexDirection: "row"
     }
   };
 
-export default WeekSchedule;
+export default ScheduleModal;
