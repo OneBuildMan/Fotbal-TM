@@ -8,11 +8,15 @@ import firestore from '@react-native-firebase/firestore';
 
 function FieldDetailsOwner() {
     const [field, setField] = useState();   
+    const [fieldId, setFieldId] = useState();   
+
 
     useEffect(  () => {
             firestore().collection("fields").where('owner_id', '==', auth().currentUser.uid).get().then( (fieldQuery) => {
                 const fieldData = fieldQuery.docs[0];
+                const fieldId = fieldData.id;
                 setField(fieldData);
+                setFieldId(fieldId);
             } );
     }, []);
 
@@ -28,7 +32,7 @@ function FieldDetailsOwner() {
     return(
         <View>
             <NavBar text="Detalii teren"/>
-            <SeeField field={field}  />
+            <SeeField field={field} fieldId={fieldId}  />
         </View>
     );
 }

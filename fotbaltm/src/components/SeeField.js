@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import Button from './Button';
 import CheckBox from '@react-native-community/checkbox';
 import storage from '@react-native-firebase/storage';
+import firestore from '@react-native-firebase/firestore';
 
-function SeeField({ field }) {
+function SeeField({ field,fieldId }) {
     // detaliile din field-urile de Text urmeaza a fi luate din terenul trimis ca props
     const name = field.get("nume");
     const address = field.get("adresa");
@@ -20,7 +21,25 @@ function SeeField({ field }) {
     }, []);
 
     const onDeleteFieldPressed = () => {
-
+        Alert.alert('Esti sigur ca vrei sa stergi terenul ?', 
+        '',
+        [
+            {
+                text: "Da",
+                onPress: () => {
+                    firestore().collection('fields').doc(fieldId).delete()
+                    .then(() => Alert.alert('Teren sters cu succes'))
+                    .catch((err) => {
+                        Alert.alert('A aparut o eroare');
+                        console.log(err);
+                    })
+                }
+            },
+            {
+                text: "Nu",
+                onPress: () => console.log('Actiunea de sterge terenul a fost anulata')
+            }
+        ]);
     }
 
     const onEditFieldPressed = () => {
