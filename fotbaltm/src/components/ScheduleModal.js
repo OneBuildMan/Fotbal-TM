@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Modal, Alert, ScrollView } from 'react-native';
+import Button from './Button';
 import firestore from '@react-native-firebase/firestore';
 
 const WeekSchedule = () => {
@@ -11,17 +12,17 @@ const WeekSchedule = () => {
     const [expandedDay, setExpandedDay] = useState(null);
     const [hours, setHours] = useState([]);
 
-    useEffect(() => {
-        const unsubscribe = firestore()
-          .collection('hours')
-          .where('available', '==', true)
-          .onSnapshot((querySnapshot) => {
-            const data = querySnapshot.docs.map((doc) => doc.data());
-            setHours(data);
-          });
+    // useEffect(() => {
+    //     const unsubscribe = firestore()
+    //       .collection('hours')
+    //       .where('available', '==', true)
+    //       .onSnapshot((querySnapshot) => {
+    //         const data = querySnapshot.docs.map((doc) => doc.data());
+    //         setHours(data);
+    //       });
       
-        return () => unsubscribe();
-      }, []);
+    //     return () => unsubscribe();
+    //   }, []);
 
 
     const handleDayPress = (day) => {
@@ -75,9 +76,7 @@ const WeekSchedule = () => {
                     key={hour}
                     onPress={() => handleHourPress(day, hour)}
                     disabled={(selectedHours[day] || []).includes(hour)}>
-                    <Text
-                      style={[                      styles.hourText,                      (selectedHours[day] || []).includes(hour) && styles.selectedHourText,
-                      ]}>
+                    <Text style={[styles.hourText, (selectedHours[day] || []).includes(hour) && styles.selectedHourText,]}>
                       {hour}:00
                     </Text>
                   </TouchableOpacity>
@@ -91,17 +90,13 @@ const WeekSchedule = () => {
 
 
   return (
-    <View>
-      <TouchableOpacity onPress={() => setIsModalVisible(true)}>
-        <Text>Show Week Schedule</Text>
-      </TouchableOpacity>
+    <ScrollView>
+        <Button text="Alege ora si data rezervarii" bgColor="white" onPress={() => setIsModalVisible(true)}/>
       <Modal visible={isModalVisible}>
         {renderWeekSchedule()}
-        <TouchableOpacity onPress={() => setIsModalVisible(false)}>
-          <Text style={styles.modalText}>Inapoi</Text>
-        </TouchableOpacity>
+          <Button text="Mergi inapoi" bgColor="white" width="40%" onPress={() => setIsModalVisible(false)}/>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };
 

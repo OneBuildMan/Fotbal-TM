@@ -68,8 +68,7 @@ const List = () => {
               </View>
               </View>
               <ScheduleModal/>
-              <Text> Alege ora placeholder </Text>
-              <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white'/>
+              {/* <Button text="Rezerva terenul" onPress={onBookPressed} bgColor='white'/> */}
             </View>
           )}
           </TouchableOpacity>
