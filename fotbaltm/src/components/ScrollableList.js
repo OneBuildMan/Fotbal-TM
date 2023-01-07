@@ -17,6 +17,8 @@ const List = () => {
 }
 
   useEffect(() => {
+
+    const fetchData = () => {
     firestore().collection('fields').onSnapshot(snapshot => {
         if(snapshot) {
         let items = snapshot.docs.map(doc => doc.data());
@@ -28,12 +30,22 @@ const List = () => {
           storage().ref(it.imagine).getDownloadURL().then( (url) => { it.urlImagine = url });
           it.id = items_ids[counter];
           counter++;
+
+          const fieldRefFirestore = firestore().collection("fields").doc(it.id); 
+          const bookingRefFirestore = fieldRefFirestore.collection("bookings");
+          bookingRefFirestore.get().then( (bookings) => {
+            it.bookings = bookings;
+          });
+
         })
         counter = 0;
 
         setItems(items);
       }
       });
+    }
+
+    fetchData();
      // storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
 
 
