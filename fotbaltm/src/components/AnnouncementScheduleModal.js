@@ -5,7 +5,7 @@ import goBackArrow from '../../assets/images/goBack.png';
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-function AnnouncementScheduleModal({field, occupiedPlaces}) {
+function AnnouncementScheduleModal({fields, fieldName, occupiedPlaces}) {
     const {height} = useWindowDimensions();
 
     let currentDay = new Date().getDate();
@@ -21,8 +21,14 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
       }
       daysOfWeek[i] = day + '/' + currentMonth;
     }
+
     const startTime = 16;
     const endTime = 23;
+    const hoursArray = Array.from(
+      Array(endTime - startTime + 1),
+      (_, i) => i + startTime
+    )
+
     const [selectedHour, setSelectedHour] = useState('');
     const [selectedDay, setSelectedDay] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -59,6 +65,33 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
         );
       };
 
+    function removeReservedHours(day) {
+      let auxHoursArray = hoursArray;
+      let finalHoursArray = hoursArray;
+      let bookedCounter = 0;
+
+      fields.forEach( (field) => {
+        if( field.nume === fieldName) {
+          let bookingsForField = field.bookings;
+          bookingsForField.forEach( (item) => {
+            const book = Object.values(item);
+            if(book[0].day === day) {
+              bookedCounter++;
+              auxHoursArray.forEach( (hour, index) => {
+                if(hour === book[0].hour) {
+                  delete finalHoursArray[index];
+                }
+              })
+            }
+    
+            })
+        }
+      })
+
+
+      return finalHoursArray;
+    }
+
     const onSaveDateAndTimePressed = () => {
         if(selectedDay != '' && selectedHour!= ''){
             Alert.alert(`Esti sigur ca vrei sa alegi ora ${selectedHour}:00 in data de ${selectedDay} ?`,
@@ -85,7 +118,7 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
         firestore().collection("announcements").doc().set({
             date: selectedDay,
             time: selectedHour,
-            field: field,
+            field: fieldName,
             occupiedPlaces: occupiedPlaces,
             creator_id: auth().currentUser.uid
         })
@@ -108,10 +141,7 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
               </TouchableOpacity>
               {expandedDay === day && (
                 <View>
-                  {Array.from(
-                    Array(endTime - startTime + 1),
-                    (_, i) => i + startTime
-                  ).map((hour) => (
+                  {removeReservedHours(day).map((hour) => (
                     <TouchableOpacity
                       key={hour}
                       onPress={() => handleHourPress(day, hour)}
