@@ -15,6 +15,7 @@ function AddAnnouncement() {
     const [fields, setFields] = useState([]);
 
     useEffect( () => {
+        const fetchData = () => {
         firestore().collection("fields").onSnapshot( (snapshot) => {
             if(snapshot) {
             let items = snapshot.docs.map(doc => doc.data());
@@ -38,6 +39,10 @@ function AddAnnouncement() {
             
             
         })
+    }
+    
+    fetchData();
+
     }, []);
 
     const onSaveAnnouncementPressed = () => {

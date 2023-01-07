@@ -115,19 +115,35 @@ function AnnouncementScheduleModal({fields, fieldName, occupiedPlaces}) {
     }
 
     const onSaveAnnouncementPressed = () => {
-        firestore().collection("announcements").doc().set({
-            date: selectedDay,
-            time: selectedHour,
-            field: fieldName,
-            occupiedPlaces: occupiedPlaces,
-            creator_id: auth().currentUser.uid
-        })
-        .then( () => {
-            setSelectionSaved(false);
-            Alert.alert('Anunt publicat cu succes!');
-        }).catch( (err) => {
-            Alert.alert('A aparut o eroare');
-        })
+      fields.forEach( (field) => {
+        if(field.nume === fieldName)  {
+          const fieldRefFirestore = firestore().collection("fields").doc(field.id); 
+          const bookingRefFirestore = fieldRefFirestore.collection("bookings");
+    
+          // prima oara se face o rezervare automata la ora si data respectiva la terenul ales, si mai apoi se creeaza anuntul
+          bookingRefFirestore.doc().set({
+            day: selectedDay,
+            hour: selectedHour,
+            player_id: auth().currentUser.uid
+          });
+        }
+      })
+
+      firestore().collection("announcements").doc().set({
+        date: selectedDay,
+        time: selectedHour,
+        field: fieldName,
+        occupiedPlaces: occupiedPlaces,
+        creator_id: auth().currentUser.uid
+    })
+    .then( () => {
+        setSelectionSaved(false);
+        Alert.alert('Anunt publicat cu succes!');
+    }).catch( (err) => {
+        Alert.alert('A aparut o eroare');
+        console.log(err);
+    })
+
     }
 
     const renderWeekSchedule = () => (
