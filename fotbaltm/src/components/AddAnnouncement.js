@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView, Alert} from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import Button from "../components/Button";
-import NavBar from "../components/NavBar";
+import Button from "./Button";
+import AnnouncementScheduleModal from "./AnnouncementScheduleModal";
 import NumericInput from 'react-native-numeric-input';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -41,13 +41,9 @@ function AddAnnouncement() {
     }
 
     return(
-        <View style={styles.root}>
-            <NavBar text="Adauga un anunt" goBack={true} navigateScreen="FindTeamMates"/>
+        <View>
             <View style={styles.container}>
-                <Text> Alege ziua placeholder </Text>
-                <Text> Alege data placeholder </Text>
                 <Text style={styles.label}>Alege teren</Text>
-
                 <View style={styles.picker}>
                 <Picker
                 selectedValue={selectedField}
@@ -66,17 +62,14 @@ function AddAnnouncement() {
                 <View style={styles.places}>
                 <NumericInput  minValue={0} maxValue={12} totalHeight={40} totalWidth={200} type='up-down' onChange={value => setOccupiedPlaces(value)} />
                 </View>
-
-                <Button bgColor="white" text="Publica anuntul" onPress={onSaveAnnouncementPressed}/>
+                <AnnouncementScheduleModal field={selectedField} occupiedPlaces={occupiedPlaces} />
+                {/* <Button bgColor="white" text="Publica anuntul" onPress={onSaveAnnouncementPressed}/> */}
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    root: {
-        paddingTop: 20
-    },
     container: {
         marginTop: 20,
         marginLeft: 40,
