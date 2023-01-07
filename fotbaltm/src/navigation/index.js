@@ -11,6 +11,7 @@ import HomeOwner from "../screens/HomeOwner";
 import AddAnnouncementScreen from "../screens/AddAnnouncementScreen";
 import SeeYourAnnouncementsScreen from "../screens/SeeYourAnnouncementsScreen";
 import SeeBookingsAsPlayerScreen from "../screens/SeeBookingsAsPlayerScreen";
+import SeeBookingsAsAdminScreen from "../screens/SeeBookingsAsAdminScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ function Navigation() {
                 <Stack.Screen name="AddAnnouncement" component={AddAnnouncementScreen}/>
                 <Stack.Screen name="SeeYourAnnouncements" component={SeeYourAnnouncementsScreen}/>
                 <Stack.Screen name="HomeOwner" component={HomeOwner} />
+                <Stack.Screen name="SeeBookingsAsAdmin" component={SeeBookingsAsAdminScreen} />
             </Stack.Navigator>
         </NavigationContainer>
     );

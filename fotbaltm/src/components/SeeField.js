@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image,Modal, Alert, useWindowDimensions, TouchableOpacity} from 'react-native';
 import Button from './Button';
 import CheckBox from '@react-native-community/checkbox';
 import storage from '@react-native-firebase/storage';
+import {useNavigation} from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+import InputBox from "../components/InputBox";
 
 function SeeField({ field }) {
     // detaliile din field-urile de Text urmeaza a fi luate din terenul trimis ca props
@@ -14,6 +18,9 @@ function SeeField({ field }) {
     const imageUrl = field.get("imagine");
 
     const [imageSource, setImageSource] = useState();
+
+    const navigation = useNavigation();
+    const {height} = useWindowDimensions();
 
     useEffect( () => {
         storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
@@ -28,6 +35,11 @@ function SeeField({ field }) {
         // in dreptul fiecarui detaliu al terenului, sa apara un pop-up unde sa schimbi respectivul atribut si sa se dea update
         // in firestore doar cu atributul respectiv
     }
+
+    const onSeeBooksPressed = () => {
+        navigation.navigate('SeeBookingsAsAdmin');
+    }
+
     return(
         <View>
             <View style={styles.container}>
@@ -46,8 +58,9 @@ function SeeField({ field }) {
             </View>
 
             <View style={styles.buttons}>
-            <Button text="Sterge terenul" bgColor='white' onPress={onDeleteFieldPressed} />
+            <Button text="Sterge terenul" bgColor='white'  width='58%' onPress={onDeleteFieldPressed} />
             <Button text="Editeaza informatiile terenului" bgColor='white' width='58%' onPress={onEditFieldPressed} />
+            <Button text="Vezi rezervari" bgColor='white' width='58%' onPress={onSeeBooksPressed} />
             </View>
         </View>
     );
@@ -69,7 +82,7 @@ const styles = StyleSheet.create({
     },
     buttons: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         margin: 10
     },
