@@ -13,7 +13,7 @@ function ScheduleModal({field}) {
       currentMonth = '0' + currentMonth;
     }
     let daysOfWeek = [ ];
-    for(i=0; i<6; i++) {
+    for(i=0; i<7; i++) {
       let day = currentDay+i;
       if( day < 10 ) {
         day = '0' + day;
@@ -163,10 +163,10 @@ const styles = {
       fontWeight: 'bold',
       marginBottom: 10,
       color:'black',
-      fontSize: 24
+      fontSize: 22
     },
     hourText: {
-      fontSize: 18,
+      fontSize: 16,
       alignSelf: "center",
     },
     selectedHourText: {
@@ -174,7 +174,7 @@ const styles = {
     },
     modalText: {
         margin: 20,
-        fontSize: 25
+        fontSize: 24
     },
     goBack: {
         maxWidth: 25,

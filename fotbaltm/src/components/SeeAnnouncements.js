@@ -6,6 +6,7 @@ import firestore from "@react-native-firebase/firestore";
 function SeeAnnouncements() {
     const [announcements, setAnnouncements] = useState([]);
     const [expanded, setExpanded] = useState(null);
+    const currentYear = new Date().getFullYear();
 
     useEffect( () => {
         firestore().collection('announcements').onSnapshot(snapshot => {
@@ -45,7 +46,7 @@ function SeeAnnouncements() {
         <ScrollView>
             {announcements.map(item => (
                 <TouchableOpacity key={item.id} style={styles.item} onPress={() => toggleExpand(item.id)}>
-                    <Text style={styles.itemTitle}>{item.date} ora {item.time}</Text>
+                    <Text style={styles.itemTitle}>{item.date}/{currentYear} ora {item.time}:00</Text>
                     {expanded === item.id && (
                         <View style={styles.details}>
                             <Text style={styles.label}>{item.field}</Text>

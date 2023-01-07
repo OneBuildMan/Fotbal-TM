@@ -8,6 +8,7 @@ function SeeYourAnnouncements() {
     const [yourAnnouncements, setYourAnnouncements] = useState([]);
     const [expanded, setExpanded] = useState(null);
     const {height} = useWindowDimensions();
+    const currentYear = new Date().getFullYear();
 
     useEffect( () => {
         firestore().collection('announcements').where('creator_id', '==', auth().currentUser.uid).onSnapshot( snapshot => {
@@ -56,7 +57,7 @@ function SeeYourAnnouncements() {
             {yourAnnouncements.map(item => (
                 <TouchableOpacity key={item.id} style={styles.item} onPress={() => toggleExpand(item.id)}>
                     <View style={styles.title}>
-                    <Text style={styles.itemTitle}>{item.date} ora {item.time} </Text>
+                    <Text style={styles.itemTitle}>{item.date}/{currentYear} ora {item.time}:00 </Text>
                     <Pressable style={styles.button} onPress={ () => onDeleteAnnouncement(item.id)}>
                         <Image style={[styles.delete, {height: height * 0.05}]} source={deleteLogo}/>
                     </Pressable>

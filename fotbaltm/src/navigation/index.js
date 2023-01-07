@@ -8,7 +8,7 @@ import BookField from "../screens/BookField";
 import SeeYourBooks from "../screens/SeeBooks";
 import FindTeamMates from "../screens/FindTeamMates";
 import HomeOwner from "../screens/HomeOwner";
-import AddAnnouncement from "../screens/AddAnnouncement";
+import AddAnnouncementScreen from "../screens/AddAnnouncementScreen";
 import SeeYourAnnouncementsScreen from "../screens/SeeYourAnnouncementsScreen";
 import SeeBookingsAsPlayerScreen from "../screens/SeeBookingsAsPlayerScreen";
 
@@ -25,7 +25,7 @@ function Navigation() {
                 <Stack.Screen name="SeeBookingsAsPlayer" component={SeeBookingsAsPlayerScreen}/>
                 <Stack.Screen name="SeeBooks" component={SeeYourBooks} />
                 <Stack.Screen name="FindTeamMates" component={FindTeamMates} />
-                <Stack.Screen name="AddAnnouncement" component={AddAnnouncement}/>
+                <Stack.Screen name="AddAnnouncement" component={AddAnnouncementScreen}/>
                 <Stack.Screen name="SeeYourAnnouncements" component={SeeYourAnnouncementsScreen}/>
                 <Stack.Screen name="HomeOwner" component={HomeOwner} />
             </Stack.Navigator>
