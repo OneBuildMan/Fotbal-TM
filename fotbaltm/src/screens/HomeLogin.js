@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Text, View, Image, StyleSheet, useWindowDimensions, ScrollView} from "react-native";
+import { Text, View, Image, Modal, StyleSheet, Alert, useWindowDimensions, ScrollView} from "react-native";
 import Logo from '../../assets/images/logo.jpg';
 import InputBox from "../components/InputBox";
 import Button from "../components/Button";
@@ -13,36 +13,41 @@ function HomeLogin() {
     const {height} = useWindowDimensions();
     const navigation = useNavigation();
 
-    
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
     //buttons, input boxes
     const [email, setEmail] = useState(''); 
     const [password,setPassword] = useState('');
     const onSignInPressed = () => {
+        if(!email.trim() || !password.trim() ) {
+            Alert.alert(
+                'Completeaza toata campurile!'
+            );
+        }
+        else {
+            auth().signInWithEmailAndPassword(email,password)
+            .then(async ()=>{
+                console.log('Te-ai autentificat!');
+                const userLoggedIn = await firestore().collection("users").doc(auth().currentUser.uid).get();
+                const role = userLoggedIn.get("role");
+                if(role === OWNER_ROLE) {
+                    navigation.navigate('HomeOwner');
+                }
+                if(role === PLAYER_ROLE) {
+                    navigation.navigate('Home');
+                }
+            })
+            .catch(error => {
+                if(error.code === 'auth/invalid-email') {
+                    console.log("wrong user");
+                }
 
-        auth().signInWithEmailAndPassword(email,password)
-        .then(async ()=>{
-            console.log('Te-ai autentificat!');
-            const userLoggedIn = await firestore().collection("users").doc(auth().currentUser.uid).get();
-            const role = userLoggedIn.get("role");
-            if(role === OWNER_ROLE) {
-                navigation.navigate('HomeOwner');
-            }
-            if(role === PLAYER_ROLE) {
-                navigation.navigate('Home');
-            }
-        })
-        .catch(error => {
-            if(error.code === 'auth/invalid-email') {
-                console.log('Email invalid');
-            }
+                if(error.code === 'auth/auth/wrong-password') {
+                    console.log("wrong pass");
+                }
 
-            if(error.code === 'auth/auth/wrong-password') {
-                console.log('Parola gresita');
-            }
-
-            alert(error.message);
-        });
+                alert(error.message);
+            })
+        };
     }
 
     const onNoAccountPressed = () => {
