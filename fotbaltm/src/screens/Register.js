@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet,ScrollView } from 'react-native';
+import { Text, View, StyleSheet,ScrollView, Alert } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {Picker} from '@react-native-picker/picker';
@@ -36,6 +36,10 @@ function Register() {
                 number: number
             });
 
+            Alert.alert(
+                'Cont creat cu succes'
+            );
+            
             navigation.navigate('HomeLogin'); // doar sa fiu sigur ca functioneaza navigate cum trebuie
         })
         .catch(error => {
