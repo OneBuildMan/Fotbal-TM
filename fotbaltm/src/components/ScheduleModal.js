@@ -20,12 +20,20 @@ function ScheduleModal({field}) {
       }
       daysOfWeek[i] = day + '/' + currentMonth;
     }
+
     const startTime = 16;
     const endTime = 23;
+
+    const hoursArray = Array.from(
+      Array(endTime - startTime + 1),
+      (_, i) => i + startTime
+    )
+
     const [selectedHour, setSelectedHour] = useState('');
     const [selectedDay, setSelectedDay] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
+    const [bookings, setBookings] = useState([]);
     const [hours, setHours] = useState([]);
 
     // useEffect(() => {
@@ -71,6 +79,44 @@ function ScheduleModal({field}) {
       );
     };
 
+    function removeReservedHours(day) {
+      let auxHoursArray = hoursArray;
+      let finalHoursArray = hoursArray;
+      let bookedCounter = 0;
+      const bookingsForField = field.bookings;
+
+      bookingsForField.forEach( (item) => {
+        const book = Object.values(item);
+        if(book[0].day === day) {
+          bookedCounter++;
+          auxHoursArray.forEach( (hour, index) => {
+            if(hour === book[0].hour) {
+              delete finalHoursArray[index];
+            }
+          })
+        }
+
+        })
+
+        if(bookedCounter === 0) {
+          finalHoursArray = hoursArray;
+        }
+
+        // item.forEach( (book) => {
+        //   if(book.day === day) {
+        //     console.log("ceva");
+        //     auxHoursArray.forEach( (hour) => {
+        //       if(hour != book.hour) {
+        //         finalHoursArray.push(hour);
+        //       }
+        //     })
+        //   }
+        // })
+        return finalHoursArray;
+      }
+
+        
+
     const onBookFieldPressed = () => {
       const fieldsRefFirestore = firestore().collection("fields").doc(field.id);
       const bookingsRefFirestore = fieldsRefFirestore.collection("bookings");
@@ -94,6 +140,7 @@ function ScheduleModal({field}) {
               Alert.alert('Rezervare facuta cu succes!');
               setSelectedDay('');
               setSelectedHour('');
+              setIsModalVisible(false);
              }).catch( (err) => {
                 Alert.alert('A aparut o eroare');
                 console.log(err);
@@ -117,10 +164,8 @@ function ScheduleModal({field}) {
             </TouchableOpacity>
             {expandedDay === day && (
               <View>
-                {Array.from(
-                  Array(endTime - startTime + 1),
-                  (_, i) => i + startTime
-                ).map((hour) => (
+                { removeReservedHours(day)
+                .map((hour) => (
                   <TouchableOpacity
                     key={hour}
                     onPress={() => handleHourPress(day, hour)}

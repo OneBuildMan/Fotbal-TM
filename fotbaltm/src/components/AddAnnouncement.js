@@ -11,20 +11,38 @@ function AddAnnouncement() {
     const [date, setDate] = useState('07.01');
     const [time, setTime] = useState('18:00');
     const [occupiedPlaces, setOccupiedPlaces] = useState(0);
-    const [selectedField, setSelectedField] = useState('');
-    const [fieldNames, setFieldNames] = useState([]);
+    const [selectedFieldName, setSelectedFieldName] = useState('');
+    const [fields, setFields] = useState([]);
 
     useEffect( () => {
-        firestore().collection("fields").get().then( (fields) => {
-            const fieldNamesArray = [];
+        const fetchData = () => {
+        firestore().collection("fields").onSnapshot( (snapshot) => {
+            if(snapshot) {
+            let items = snapshot.docs.map(doc => doc.data());
+            const items_ids = snapshot.docs.map(doc => doc.id);
+            let counter = 0;
 
-            fields.forEach( (instance) => {
-                fieldNamesArray.push(instance.get("nume"));
-            });
+            items.forEach( (it) => {
+                it.id = items_ids[counter];
+                counter++;
 
-            console.log(fieldNamesArray);
-            setFieldNames(fieldNamesArray);
+                const fieldRefFirestore = firestore().collection("fields").doc(it.id); 
+                const bookingRefFirestore = fieldRefFirestore.collection("bookings");
+                bookingRefFirestore.get().then( (bookings) => {
+                  it.bookings = bookings;
+                });
+      
+            })
+            setFields(items);
+            setSelectedFieldName(items[0].nume);
+            }
+            
+            
         })
+    }
+    
+    fetchData();
+
     }, []);
 
     const onSaveAnnouncementPressed = () => {
@@ -46,13 +64,14 @@ function AddAnnouncement() {
                 <Text style={styles.label}>Alege teren</Text>
                 <View style={styles.picker}>
                 <Picker
-                selectedValue={selectedField}
-                onValueChange={(itemValue, itemIndex) => 
-                    setSelectedField(itemValue)
+                selectedValue={selectedFieldName}
+                onValueChange={(itemValue, itemIndex) => {
+                    setSelectedFieldName(itemValue);
+                }
                 }>
-                    { fieldNames.map( (item) => {
+                    { fields.map( (item) => {
                         return(
-                            <Picker.Item key={item} style={{fontSize: 14}} label={item} value={item} ></Picker.Item>
+                            <Picker.Item key={item.id} style={{fontSize: 14}} label={item.nume} value={item.nume} ></Picker.Item>
                         );
                     })}
                 </Picker>
@@ -62,7 +81,7 @@ function AddAnnouncement() {
                 <View style={styles.places}>
                 <NumericInput  minValue={0} maxValue={12} totalHeight={40} totalWidth={200} type='up-down' onChange={value => setOccupiedPlaces(value)} />
                 </View>
-                <AnnouncementScheduleModal field={selectedField} occupiedPlaces={occupiedPlaces} />
+                <AnnouncementScheduleModal fields={fields} fieldName={selectedFieldName} occupiedPlaces={occupiedPlaces} />
                 {/* <Button bgColor="white" text="Publica anuntul" onPress={onSaveAnnouncementPressed}/> */}
             </View>
         </View>
