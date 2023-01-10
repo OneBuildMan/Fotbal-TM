@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image,Modal, Alert, useWindowDimensions, Toucha
 import Button from './Button';
 import CheckBox from '@react-native-community/checkbox';
 import storage from '@react-native-firebase/storage';
+import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import Edit from '../../assets/images/editField.png';
 import auth from '@react-native-firebase/auth';
@@ -27,6 +28,8 @@ function SeeField({ field,fieldId }) {
     [price, setPrice] = useState('');
     [price2, setPrice2] = useState('');
     price = field.get("pret");
+
+    const navigation = useNavigation();
 
     [number, setNumber] = useState('');
     [number2, setNumber2] = useState('');
@@ -104,11 +107,10 @@ function SeeField({ field,fieldId }) {
         ]);
     }
 
-    const onEditFieldPressed = () => {
-        // potentiala idee, sa nu mai fie un formular ca pe mock cu toate atributele, ci sa fie o iconita mica de edit
-        // in dreptul fiecarui detaliu al terenului, sa apara un pop-up unde sa schimbi respectivul atribut si sa se dea update
-        // in firestore doar cu atributul respectiv
+    const onSeeBooksPressed = () => {
+        navigation.navigate('SeeBookingsAsAdmin');
     }
+
     return(
         <View>
             <View style={styles.container}>
@@ -149,8 +151,8 @@ function SeeField({ field,fieldId }) {
             </View>
 
             <View style={styles.buttons}>
-            <Button text="Sterge terenul" bgColor='white' onPress={onDeleteFieldPressed} />
-            <Button text="Editeaza informatiile terenului" bgColor='white' width='58%' onPress={onEditFieldPressed} />
+            <Button text="Sterge terenul" bgColor='white'  width='58%' onPress={onDeleteFieldPressed} />
+            <Button text="Vezi rezervari" bgColor='white' width='58%' onPress={onSeeBooksPressed} />
             </View>
         </View>
     );
@@ -172,7 +174,7 @@ const styles = StyleSheet.create({
     },
     buttons: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
         margin: 10
     },
