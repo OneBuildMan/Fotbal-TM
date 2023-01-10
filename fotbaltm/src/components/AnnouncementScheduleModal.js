@@ -5,7 +5,7 @@ import goBackArrow from '../../assets/images/goBack.png';
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-function AnnouncementScheduleModal({field, occupiedPlaces}) {
+function AnnouncementScheduleModal({fields, fieldName, occupiedPlaces}) {
     const {height} = useWindowDimensions();
 
     let currentDay = new Date().getDate();
@@ -21,8 +21,14 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
       }
       daysOfWeek[i] = day + '/' + currentMonth;
     }
+
     const startTime = 16;
     const endTime = 23;
+    const hoursArray = Array.from(
+      Array(endTime - startTime + 1),
+      (_, i) => i + startTime
+    )
+
     const [selectedHour, setSelectedHour] = useState('');
     const [selectedDay, setSelectedDay] = useState('');
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -59,6 +65,33 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
         );
       };
 
+    function removeReservedHours(day) {
+      let auxHoursArray = hoursArray;
+      let finalHoursArray = hoursArray;
+      let bookedCounter = 0;
+
+      fields.forEach( (field) => {
+        if( field.nume === fieldName) {
+          let bookingsForField = field.bookings;
+          bookingsForField.forEach( (item) => {
+            const book = Object.values(item);
+            if(book[0].day === day) {
+              bookedCounter++;
+              auxHoursArray.forEach( (hour, index) => {
+                if(hour === book[0].hour) {
+                  delete finalHoursArray[index];
+                }
+              })
+            }
+    
+            })
+        }
+      })
+
+
+      return finalHoursArray;
+    }
+
     const onSaveDateAndTimePressed = () => {
         if(selectedDay != '' && selectedHour!= ''){
             Alert.alert(`Esti sigur ca vrei sa alegi ora ${selectedHour}:00 in data de ${selectedDay} ?`,
@@ -82,19 +115,35 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
     }
 
     const onSaveAnnouncementPressed = () => {
-        firestore().collection("announcements").doc().set({
-            date: selectedDay,
-            time: selectedHour,
-            field: field,
-            occupiedPlaces: occupiedPlaces,
-            creator_id: auth().currentUser.uid
-        })
-        .then( () => {
-            setSelectionSaved(false);
-            Alert.alert('Anunt publicat cu succes!');
-        }).catch( (err) => {
-            Alert.alert('A aparut o eroare');
-        })
+      fields.forEach( (field) => {
+        if(field.nume === fieldName)  {
+          const fieldRefFirestore = firestore().collection("fields").doc(field.id); 
+          const bookingRefFirestore = fieldRefFirestore.collection("bookings");
+    
+          // prima oara se face o rezervare automata la ora si data respectiva la terenul ales, si mai apoi se creeaza anuntul
+          bookingRefFirestore.doc().set({
+            day: selectedDay,
+            hour: selectedHour,
+            player_id: auth().currentUser.uid
+          });
+        }
+      })
+
+      firestore().collection("announcements").doc().set({
+        date: selectedDay,
+        time: selectedHour,
+        field: fieldName,
+        occupiedPlaces: occupiedPlaces,
+        creator_id: auth().currentUser.uid
+    })
+    .then( () => {
+        setSelectionSaved(false);
+        Alert.alert('Anunt publicat cu succes!');
+    }).catch( (err) => {
+        Alert.alert('A aparut o eroare');
+        console.log(err);
+    })
+
     }
 
     const renderWeekSchedule = () => (
@@ -108,10 +157,7 @@ function AnnouncementScheduleModal({field, occupiedPlaces}) {
               </TouchableOpacity>
               {expandedDay === day && (
                 <View>
-                  {Array.from(
-                    Array(endTime - startTime + 1),
-                    (_, i) => i + startTime
-                  ).map((hour) => (
+                  {removeReservedHours(day).map((hour) => (
                     <TouchableOpacity
                       key={hour}
                       onPress={() => handleHourPress(day, hour)}

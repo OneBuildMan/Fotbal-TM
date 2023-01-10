@@ -5,29 +5,106 @@ import CheckBox from '@react-native-community/checkbox';
 import storage from '@react-native-firebase/storage';
 import {useNavigation} from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
+import Edit from '../../assets/images/editField.png';
 import auth from '@react-native-firebase/auth';
 import InputBox from "../components/InputBox";
 
-function SeeField({ field }) {
+function SeeField({ field,fieldId }) {
     // detaliile din field-urile de Text urmeaza a fi luate din terenul trimis ca props
     const name = field.get("nume");
     const address = field.get("adresa");
-    const number = field.get("numar");
-    const price = field.get("pret");
+    number = field.get("numar");
+    price = field.get("pret");
     const covered = field.get("acoperit");
     const imageUrl = field.get("imagine");
 
-    const [imageSource, setImageSource] = useState();
-
-    const navigation = useNavigation();
     const {height} = useWindowDimensions();
 
+    const [imageSource, setImageSource] = useState();
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isModalVisible1, setIsModalVisible1] = useState(false);
+    const [isModalVisible2, setIsModalVisible2] = useState(false);
+
+    [price, setPrice] = useState('');
+    [price2, setPrice2] = useState('');
+    price = field.get("pret");
+
+    const navigation = useNavigation();
+
+    [number, setNumber] = useState('');
+    [number2, setNumber2] = useState('');
+    number = field.get("numar");
+    
     useEffect( () => {
         storage().ref(imageUrl).getDownloadURL().then( (url) => { setImageSource(url) })
     }, []);
 
-    const onDeleteFieldPressed = () => {
+    const onEditPressPrice = () => {
+        setIsModalVisible(false);
+        Alert.alert(
+            `Schimbi pretul la ${price2}?`,
+            '',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => {
+                    const collectionRef = firestore().collection('fields');
+                collectionRef.doc(field.id).update({ pret: price2 });
+                setPrice(price2);
+                  },
+              },
+            ],
+            { cancelable: false }
+          );
+    }
 
+    const onEditPressNumber = () => {
+        setIsModalVisible1(false);
+        Alert.alert(
+            `Schimbi numarul la ${number2}?`,
+            '',
+            [
+              {
+                text: 'Cancel',
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => {
+                    const collectionRef = firestore().collection('fields');
+                collectionRef.doc(field.id).update({ numar: number2 });
+                setNumber(number2);
+                  },
+              },
+            ],
+            { cancelable: false }
+          );
+    }
+    
+    const onDeleteFieldPressed = () => {
+        Alert.alert('Esti sigur ca vrei sa stergi terenul ?', 
+        '',
+        [
+            {
+                text: "Da",
+                onPress: () => {
+                    firestore().collection('fields').doc(fieldId).delete()
+                    .then(() => Alert.alert('Teren sters cu succes'))
+                    .catch((err) => {
+                        Alert.alert('A aparut o eroare');
+                        console.log(err);
+                    })
+                }
+            },
+            {
+                text: "Nu",
+                onPress: () => console.log('Actiunea de sterge terenul a fost anulata')
+            }
+        ]);
     }
 
     const onEditFieldPressed = () => {
@@ -43,15 +120,37 @@ function SeeField({ field }) {
     return(
         <View>
             <View style={styles.container}>
-            <Text style={styles.text}> {name} </Text>              
+            <Text style={styles.text}> {name} </Text>
+            
+            
+                     
             <Text style={styles.text}> {address} </Text>
-            <Text style={styles.text}> {number} </Text>
-            <Text style={styles.text}> {price} lei/ora </Text>
-
-            <View style={styles.covered}>
-                <CheckBox style={styles.checkbox} disabled={false} value={covered} />
-                <Text style={styles.text}>Acoperit</Text>
+            <View style={styles.cutie}>
+                <Text style={styles.text}> {number} </Text>
+                <TouchableOpacity onPress={() => setIsModalVisible1(true)}>  
+                    <Image style={[styles.edit, {height: height * 0.05}]} source={Edit} />
+                    <Modal animationType="slide" transparent={false} visible={isModalVisible1}>
+                        <InputBox style={styles.inputbox} placeholder="Numar"  setValue={setNumber2}/>
+                        <Button text="Schimba numarul" bgColor="white" width="40%" onPress={ onEditPressNumber}/>
+                        <Button text="Mergi inapoi" bgColor="white" width="40%" onPress={() => setIsModalVisible1(false)}/>
+                    </Modal>
+                </TouchableOpacity>
+                </View>
+            <View style={styles.cutie}>
+                <Text style={styles.text}> {price} lei/ora </Text>
+                <TouchableOpacity onPress={() => setIsModalVisible(true)}>  
+                    <Image style={[styles.edit, {height: height * 0.05}]} source={Edit} />
+                    <Modal animationType="slide" transparent={false} visible={isModalVisible}>
+                        <InputBox style={styles.inputbox} placeholder="Pret"  setValue={setPrice2}/>
+                        <Button text="Schimba pretul" bgColor="white" width="40%" onPress={ onEditPressPrice}/>
+                        <Button text="Mergi inapoi" bgColor="white" width="40%" onPress={() => setIsModalVisible(false)}/>
+                    </Modal>
+                </TouchableOpacity>
             </View>
+                <View style={styles.covered}>               
+                <Text style={styles.text}>Acoperit</Text>
+                <CheckBox style={styles.checkbox} disabled={false} value={covered} />
+                </View>
             <View style={styles.imageView}>
             <Image style={styles.image} source={{uri: imageSource}} />
             </View>
@@ -103,5 +202,16 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         padding: 10
+    },
+    edit: {
+        maxWidth: 30,
+        maxHeight: 20
+    },
+    cutie: {
+        display: "flex",
+        flexDirection: "row",
+    },
+    inputbox: {
+        padding:20
     }
 })

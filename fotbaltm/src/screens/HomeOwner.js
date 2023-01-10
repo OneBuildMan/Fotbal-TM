@@ -4,6 +4,7 @@ import {useNavigation} from '@react-navigation/native';
 import Button from "../components/Button";
 import FieldDetailsOwner from "../components/FieldDetailsOwner";
 import auth from "@react-native-firebase/auth";
+import NavBar from '../components/NavBar';
 
 function HomeOwner() {
     const navigation = useNavigation();
@@ -18,6 +19,7 @@ function HomeOwner() {
     return(
         <ScrollView showsVerticalScrollIndicator={false}>
             <View>
+            <NavBar text="Detalii teren"/>
             <FieldDetailsOwner />
             </View>
         </ScrollView>
