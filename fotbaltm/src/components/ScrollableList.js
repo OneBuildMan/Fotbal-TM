@@ -99,8 +99,8 @@ const styles = StyleSheet.create({
 
     paddingTop: 4,
     paddingBottom: 4,
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
 
     marginTop: 10,
     marginVertical: 8,

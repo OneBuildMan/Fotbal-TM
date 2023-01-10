@@ -33,7 +33,7 @@ function HomeLogin() {
                     navigation.navigate('HomeOwner');
                 }
                 if(role === PLAYER_ROLE) {
-                    navigation.navigate('Home');
+                    navigation.navigate('BookField');
                 }
             })
             .catch(error => {
@@ -51,7 +51,6 @@ function HomeLogin() {
     }
 
     const onNoAccountPressed = () => {
-        console.warn("No Account");
         navigation.navigate('Register');
     }
     return(

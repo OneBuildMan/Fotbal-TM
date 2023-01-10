@@ -192,7 +192,7 @@ function AnnouncementScheduleModal({fields, fieldName, occupiedPlaces}) {
             {selectionSaved && (
                 <Text style={styles.selection}> Selectia ta: {selectedDay} ora {selectedHour}:00 </Text>
             )}
-            <Button text="Publica anuntul" bgColor="white" onPress={onSaveAnnouncementPressed}/>
+            <Button text="Publica anuntul" onPress={onSaveAnnouncementPressed}/>
         </ScrollView>
     );
 }

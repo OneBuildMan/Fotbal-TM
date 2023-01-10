@@ -107,12 +107,6 @@ function SeeField({ field,fieldId }) {
         ]);
     }
 
-    const onEditFieldPressed = () => {
-        // potentiala idee, sa nu mai fie un formular ca pe mock cu toate atributele, ci sa fie o iconita mica de edit
-        // in dreptul fiecarui detaliu al terenului, sa apara un pop-up unde sa schimbi respectivul atribut si sa se dea update
-        // in firestore doar cu atributul respectiv
-    }
-
     const onSeeBooksPressed = () => {
         navigation.navigate('SeeBookingsAsAdmin');
     }
@@ -158,7 +152,6 @@ function SeeField({ field,fieldId }) {
 
             <View style={styles.buttons}>
             <Button text="Sterge terenul" bgColor='white'  width='58%' onPress={onDeleteFieldPressed} />
-            <Button text="Editeaza informatiile terenului" bgColor='white' width='58%' onPress={onEditFieldPressed} />
             <Button text="Vezi rezervari" bgColor='white' width='58%' onPress={onSeeBooksPressed} />
             </View>
         </View>

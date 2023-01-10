@@ -17,7 +17,6 @@ function Register() {
     const navigation = useNavigation();
 
     const onLoginPressed = () => {
-        console.warn("Login");
         //validate user
 
         navigation.navigate('HomeLogin');
